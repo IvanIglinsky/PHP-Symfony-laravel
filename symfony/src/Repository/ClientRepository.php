@@ -15,7 +15,22 @@ class ClientRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Client::class);
     }
+    public function findByFilters(array $filters)
+{
+    $qb = $this->createQueryBuilder('c');
 
+    if (!empty($filters['name'])) {
+        $qb->andWhere('c.name LIKE :name')
+            ->setParameter('name', '%' . $filters['name'] . '%');
+    }
+
+    if (!empty($filters['phone'])) {
+        $qb->andWhere('c.phone LIKE :phone')
+            ->setParameter('phone', '%' . $filters['phone'] . '%');
+    }
+
+    return $qb->getQuery();
+}
     //    /**
     //     * @return Client[] Returns an array of Client objects
     //     */

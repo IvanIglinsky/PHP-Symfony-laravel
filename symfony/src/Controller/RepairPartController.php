@@ -15,10 +15,31 @@ use Symfony\Component\Routing\Attribute\Route;
 final class RepairPartController extends AbstractController
 {
     #[Route(name: 'app_repair_part_index', methods: ['GET'])]
-    public function index(RepairPartRepository $repairPartRepository): Response
+    public function index(Request $request, EntityManagerInterface $em): Response
     {
+        $qb = $em->getRepository(RepairPart::class)->createQueryBuilder('rp');
+
+        if ($repairId = $request->query->get('repairId')) {
+            $qb->andWhere('rp.repair = :repairId')->setParameter('repairId', $repairId);
+        }
+        if ($partId = $request->query->get('partId')) {
+            $qb->andWhere('rp.part = :partId')->setParameter('partId', $partId);
+        }
+
+        $page = max(1, (int)$request->query->get('page', 1));
+        $limit = max(1, (int)$request->query->get('itemsPerPage', 10));
+
+        $query = $qb->getQuery();
+        $paginator = new \Doctrine\ORM\Tools\Pagination\Paginator($query);
+        $totalItems = count($paginator);
+        $query->setFirstResult(($page - 1) * $limit)->setMaxResults($limit);
+
         return $this->render('repair_part/index.html.twig', [
-            'repair_parts' => $repairPartRepository->findAll(),
+            'repairParts' => $query->getResult(),
+            'total' => $totalItems,
+            'page' => $page,
+            'itemsPerPage' => $limit,
+            'filters' => $request->query->all()
         ]);
     }
 

@@ -7,11 +7,31 @@ use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $clients = Client::all();
-        return view('clients.index', compact('clients'));
+        // Отримати itemsPerPage з запиту або стандартне значення 10
+        $itemsPerPage = $request->input('itemsPerPage', 10);
+
+        // Отримати всі фільтри з запиту
+        $query = \App\Models\Client::query();
+
+        // Фільтрація по кожному полю
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+        if ($request->filled('phone')) {
+            $query->where('phone', 'like', '%' . $request->phone . '%');
+        }
+        if ($request->filled('email')) {
+            $query->where('email', 'like', '%' . $request->email . '%');
+        }
+
+        // Пагінація
+        $clients = $query->paginate($itemsPerPage)->appends($request->all());
+
+        return view('clients.index', compact('clients', 'itemsPerPage'));
     }
+
 
     public function create()
     {

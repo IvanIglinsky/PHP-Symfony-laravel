@@ -15,10 +15,31 @@ use Symfony\Component\Routing\Attribute\Route;
 final class PartController extends AbstractController
 {
     #[Route(name: 'app_part_index', methods: ['GET'])]
-    public function index(PartRepository $partRepository): Response
+    public function index(Request $request, EntityManagerInterface $em): Response
     {
+        $qb = $em->getRepository(Part::class)->createQueryBuilder('p');
+
+        if ($name = $request->query->get('name')) {
+            $qb->andWhere('p.name LIKE :name')->setParameter('name', "%$name%");
+        }
+        if ($price = $request->query->get('price')) {
+            $qb->andWhere('p.price = :price')->setParameter('price', $price);
+        }
+
+        $page = max(1, (int)$request->query->get('page', 1));
+        $limit = max(1, (int)$request->query->get('itemsPerPage', 10));
+
+        $query = $qb->getQuery();
+        $paginator = new \Doctrine\ORM\Tools\Pagination\Paginator($query);
+        $totalItems = count($paginator);
+        $query->setFirstResult(($page - 1) * $limit)->setMaxResults($limit);
+
         return $this->render('part/index.html.twig', [
-            'parts' => $partRepository->findAll(),
+            'parts' => $query->getResult(),
+            'total' => $totalItems,
+            'page' => $page,
+            'itemsPerPage' => $limit,
+            'filters' => $request->query->all()
         ]);
     }
 

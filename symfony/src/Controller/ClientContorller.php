@@ -14,15 +14,30 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/client/contorller')]
 final class ClientContorller extends AbstractController
 {
-    #[Route(name: 'app_client_contorller_index', methods: ['GET'])]
-    public function index(ClientRepository $clientRepository): Response
+
+    #[Route(name: 'app_client_index', methods: ['GET'])]
+    public function index(ClientRepository $clientRepository, Request $request, PaginatorInterface $paginator): Response
     {
-        return $this->render('client_contorller/index.html.twig', [
-            'clients' => $clientRepository->findAll(),
+        $filters = [
+            'name' => $request->query->get('name'),
+            'phone' => $request->query->get('phone'),
+        ];
+
+        $query = $clientRepository->findByFilters($filters);
+
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            $request->query->getInt('itemsPerPage', 10)
+        );
+
+        return $this->render('client/index.html.twig', [
+            'pagination' => $pagination,
+            'filters' => $filters,
         ]);
     }
 
-    #[Route('/new', name: 'app_client_contorller_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'app_client_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $client = new Client();
@@ -33,24 +48,24 @@ final class ClientContorller extends AbstractController
             $entityManager->persist($client);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_client_contorller_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_client_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('client_contorller/new.html.twig', [
+        return $this->render('client/new.html.twig', [
             'client' => $client,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_client_contorller_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_client_show', methods: ['GET'])]
     public function show(Client $client): Response
     {
-        return $this->render('client_contorller/show.html.twig', [
+        return $this->render('client/show.html.twig', [
             'client' => $client,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_client_contorller_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_client_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Client $client, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ClientForm::class, $client);
@@ -59,16 +74,16 @@ final class ClientContorller extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_client_contorller_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_client_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('client_contorller/edit.html.twig', [
+        return $this->render('client/edit.html.twig', [
             'client' => $client,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_client_contorller_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_client_delete', methods: ['POST'])]
     public function delete(Request $request, Client $client, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$client->getId(), $request->getPayload()->getString('_token'))) {
@@ -76,6 +91,6 @@ final class ClientContorller extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_client_contorller_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_client_index', [], Response::HTTP_SEE_OTHER);
     }
 }

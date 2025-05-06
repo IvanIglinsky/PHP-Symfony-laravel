@@ -14,11 +14,33 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/car')]
 final class CarController extends AbstractController
 {
+
     #[Route(name: 'app_car_index', methods: ['GET'])]
-    public function index(CarRepository $carRepository): Response
+    public function index(Request $request, EntityManagerInterface $em): Response
     {
+        $qb = $em->getRepository(Car::class)->createQueryBuilder('c');
+
+        if ($brand = $request->query->get('brand')) {
+            $qb->andWhere('c.brand LIKE :brand')->setParameter('brand', "%$brand%");
+        }
+        if ($model = $request->query->get('model')) {
+            $qb->andWhere('c.model LIKE :model')->setParameter('model', "%$model%");
+        }
+
+        $page = max(1, (int)$request->query->get('page', 1));
+        $limit = max(1, (int)$request->query->get('itemsPerPage', 10));
+
+        $query = $qb->getQuery();
+        $paginator = new \Doctrine\ORM\Tools\Pagination\Paginator($query);
+        $totalItems = count($paginator);
+        $query->setFirstResult(($page - 1) * $limit)->setMaxResults($limit);
+
         return $this->render('car/index.html.twig', [
-            'cars' => $carRepository->findAll(),
+            'cars' => $query->getResult(),
+            'total' => $totalItems,
+            'page' => $page,
+            'itemsPerPage' => $limit,
+            'filters' => $request->query->all()
         ]);
     }
 
@@ -78,4 +100,5 @@ final class CarController extends AbstractController
 
         return $this->redirectToRoute('app_car_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

@@ -7,11 +7,27 @@ use Illuminate\Http\Request;
 
 class CarController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $cars = Car::all();
-        return view('cars.index', compact('cars'));
+        $itemsPerPage = $request->input('itemsPerPage', 10);
+
+        $query = \App\Models\Car::query();
+
+        if ($request->filled('brand')) {
+            $query->where('brand', 'like', '%' . $request->brand . '%');
+        }
+        if ($request->filled('model')) {
+            $query->where('model', 'like', '%' . $request->model . '%');
+        }
+        if ($request->filled('license_plate')) {
+            $query->where('license_plate', 'like', '%' . $request->license_plate . '%');
+        }
+
+        $cars = $query->paginate($itemsPerPage)->appends($request->all());
+
+        return view('cars.index', compact('cars', 'itemsPerPage'));
     }
+
 
     public function create()
     {

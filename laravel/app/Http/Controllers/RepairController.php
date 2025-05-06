@@ -10,11 +10,27 @@ class RepairController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $repairs = Repair::all();
-        return view('repairs.index', compact('repairs'));
+        $itemsPerPage = $request->input('itemsPerPage', 10);
+
+        $query = \App\Models\Repair::query();
+
+        if ($request->filled('car_id')) {
+            $query->where('car_id', $request->car_id);
+        }
+        if ($request->filled('description')) {
+            $query->where('description', 'like', '%' . $request->description . '%');
+        }
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->date);
+        }
+
+        $repairs = $query->paginate($itemsPerPage)->appends($request->all());
+
+        return view('repairs.index', compact('repairs', 'itemsPerPage'));
     }
+
 
     /**
      * Show the form for creating a new resource.

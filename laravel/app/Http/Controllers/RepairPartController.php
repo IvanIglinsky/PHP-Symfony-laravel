@@ -10,11 +10,27 @@ class RepairPartController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $repairParts = RepairPart::all();
-        return view('repairParts.index', compact('repairParts'));
+        $itemsPerPage = $request->input('itemsPerPage', 10);
+
+        $query = \App\Models\RepairPart::query();
+
+        if ($request->filled('repair_id')) {
+            $query->where('repair_id', $request->repair_id);
+        }
+        if ($request->filled('part_id')) {
+            $query->where('part_id', $request->part_id);
+        }
+        if ($request->filled('quantity')) {
+            $query->where('quantity', $request->quantity);
+        }
+
+        $repairParts = $query->paginate($itemsPerPage)->appends($request->all());
+
+        return view('repair_parts.index', compact('repairParts', 'itemsPerPage'));
     }
+
 
     /**
      * Show the form for creating a new resource.
