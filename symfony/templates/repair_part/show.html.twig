@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}RepairPart{% endblock %}
+
+{% block body %}
+    <h1>RepairPart</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ repair_part.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ repair_part.name }}</td>
+            </tr>
+            <tr>
+                <th>PartId</th>
+                <td>{{ repair_part.partId }}</td>
+            </tr>
+            <tr>
+                <th>CarId</th>
+                <td>{{ repair_part.carId }}</td>
+            </tr>
+            <tr>
+                <th>UserId</th>
+                <td>{{ repair_part.userId }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ repair_part.price }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_repair_part_index') }}">back to list</a>
+
+    <a href="{{ path('app_repair_part_edit', {'id': repair_part.id}) }}">edit</a>
+
+    {{ include('repair_part/_delete_form.html.twig') }}
+{% endblock %}

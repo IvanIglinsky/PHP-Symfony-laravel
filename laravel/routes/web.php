@@ -1,9 +1,20 @@
 <?php
 
-use App\Http\Controllers\TestController;
-use Symfony\Component\Routing\Annotation\Route;
-
-Route::get('/',function(){
-    return view('welcome');
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\CarController;
+use App\Http\Controllers\PartController;
+use App\Http\Controllers\RepairController;
+use App\Http\Controllers\RepairPartController;
+Route::get('/', function () {
+return view('welcome');
 });
-Route::get('/test', [TestController::class, 'test']);
+
+Route::resource('clients', ClientController::class);
+Route::resource('cars', CarController::class);
+
+
+Route::resource('parts', PartController::class);
+Route::resource('repairs', RepairController::class);
+
+Route::resource('repairParts', RepairPartController::class);
