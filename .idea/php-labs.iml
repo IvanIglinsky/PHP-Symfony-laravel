@@ -8,11 +8,8 @@
       <sourceFolder url="file://$MODULE_DIR$/laravel/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/laravel/tests/Feature" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/laravel/tests/Unit" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/symfony/my_project_directory/src" isTestSource="false" packagePrefix="App\" />
       <sourceFolder url="file://$MODULE_DIR$/symfony/my_project_directory/tests" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/symfony/my_project_directory/tests" isTestSource="true" packagePrefix="App\Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/symfony/src" isTestSource="false" packagePrefix="App\" />
-      <sourceFolder url="file://$MODULE_DIR$/symfony/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/symfony/tests" isTestSource="true" packagePrefix="App\Tests\" />
       <excludeFolder url="file://$MODULE_DIR$/symfony/my_project_directory/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/symfony/my_project_directory/vendor/doctrine/cache" />
@@ -299,6 +296,8 @@
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/laravel/sail" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/laravel/serializable-closure" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/laravel/tinker" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/lcobucci/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/lcobucci/jwt" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/league/commonmark" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/league/config" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/league/flysystem" />
@@ -352,6 +351,7 @@
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/sebastian/type" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/sebastian/version" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/staabm/side-effects-detector" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/stella-maris/clock" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/clock" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/console" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/css-selector" />
@@ -384,9 +384,15 @@
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/theseer/tokenizer" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/tightenco/ziggy" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/tijsverkoyen/css-to-inline-styles" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/tymon/jwt-auth" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/webmozart/assert" />
+      <excludeFolder url="file://$MODULE_DIR$/symfony/vendor/lcobucci/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/symfony/vendor/lcobucci/jwt" />
+      <excludeFolder url="file://$MODULE_DIR$/symfony/vendor/lexik/jwt-authentication-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/symfony/vendor/namshi/jose" />
+      <excludeFolder url="file://$MODULE_DIR$/symfony/vendor/stella-maris/clock" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

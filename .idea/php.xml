@@ -390,6 +390,15 @@
       <path value="$PROJECT_DIR$/laravel/vendor/sebastian/lines-of-code" />
       <path value="$PROJECT_DIR$/laravel/vendor/sebastian/environment" />
       <path value="$PROJECT_DIR$/laravel/vendor/sebastian/exporter" />
+      <path value="$PROJECT_DIR$/symfony/vendor/lcobucci/clock" />
+      <path value="$PROJECT_DIR$/symfony/vendor/lcobucci/jwt" />
+      <path value="$PROJECT_DIR$/symfony/vendor/lexik/jwt-authentication-bundle" />
+      <path value="$PROJECT_DIR$/symfony/vendor/namshi/jose" />
+      <path value="$PROJECT_DIR$/symfony/vendor/stella-maris/clock" />
+      <path value="$PROJECT_DIR$/laravel/vendor/lcobucci/clock" />
+      <path value="$PROJECT_DIR$/laravel/vendor/lcobucci/jwt" />
+      <path value="$PROJECT_DIR$/laravel/vendor/tymon/jwt-auth" />
+      <path value="$PROJECT_DIR$/laravel/vendor/stella-maris/clock" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2">
